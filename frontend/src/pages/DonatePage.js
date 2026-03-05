@@ -115,12 +115,12 @@ export default function DonatePage() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.25rem' }}>
                   <span style={{ color: 'var(--text-secondary)' }}>{t('donate.validatedBy')}</span>
-                  <span>🛡️ {need.validator?.name} ({t('common.score')}: {need.validator?.reputationScore})</span>
+                  <span><UIcon name="shield-check" size={14} /> {need.validator?.name} ({t('common.score')}: {need.validator?.reputationScore})</span>
                 </div>
                 {need.restaurant && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.25rem' }}>
                     <span style={{ color: 'var(--text-secondary)' }}>{t('donate.restaurant')}</span>
-                    <span>🥘 {need.restaurant.name}</span>
+                    <span><UIcon name="restaurant" size={14} /> {need.restaurant.name}</span>
                   </div>
                 )}
                 <hr style={{ border: 'none', borderTop: '1px solid var(--border-color)', margin: '0.5rem 0' }} />
@@ -132,14 +132,14 @@ export default function DonatePage() {
                 {/* Wallet balance info */}
                 <hr style={{ border: 'none', borderTop: '1px solid var(--border-color)', margin: '0.5rem 0' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--text-secondary)' }}>🪙 {t('donate.walletBalance')}</span>
+                  <span style={{ color: 'var(--text-secondary)' }}><UIcon name="coin" size={14} /> {t('donate.walletBalance')}</span>
                   <span style={{ fontWeight: 600, color: walletBalance >= need.estimatedAmount ? 'var(--success)' : 'var(--danger, #e53e3e)' }}>
                     {walletBalance != null ? `${walletBalance.toLocaleString()} MRU` : '—'}
                   </span>
                 </div>
                 {walletBalance != null && walletBalance < need.estimatedAmount && (
                   <div style={{ marginTop: '0.75rem', padding: '0.75rem', background: 'var(--danger-light, #fff5f5)', borderRadius: 'var(--radius-md)', fontSize: '0.85rem', color: 'var(--danger, #e53e3e)', textAlign: 'center' }}>
-                    ⚠️ {t('donate.insufficientBalance')}
+                    <UIcon name="triangle-warning" size={14} /> {t('donate.insufficientBalance')}
                     <button
                       className="btn btn-secondary btn-sm"
                       style={{ marginLeft: '0.5rem', marginTop: '0.25rem' }}
@@ -161,7 +161,7 @@ export default function DonatePage() {
                 onClick={handleDonate}
                 disabled={need.status !== 'OPEN' || (walletBalance != null && walletBalance < need.estimatedAmount)}
               >
-                🪙 {t('donate.pay')} {need.estimatedAmount?.toLocaleString()} MRU
+                <UIcon name="coin" size={16} /> {t('donate.pay')} {need.estimatedAmount?.toLocaleString()} MRU
               </button>
             </div>
           </div>
@@ -188,14 +188,14 @@ export default function DonatePage() {
         <div className="fade-in">
           <StepIndicator current="receipt" />
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>✓</div>
+            <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}><UIcon name="check-circle" size={48} color="var(--success)" /></div>
             <h2 style={{ color: 'var(--success)' }}>{t('donate.successTitle')}</h2>
             <p style={{ color: 'var(--text-secondary)' }}>{t('donate.successDesc')}</p>
           </div>
 
           <div className="receipt">
             <div className="receipt-header">
-              <h3>☪ {t('donate.receiptTitle')}</h3>
+              <h3><UIcon name="moon-stars" variant="sr" size={18} /> {t('donate.receiptTitle')}</h3>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>{t('donate.receiptSubtitle')}</p>
             </div>
 

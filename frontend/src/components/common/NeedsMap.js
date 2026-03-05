@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import UIcon from './UIcon';
 import 'leaflet/dist/leaflet.css';
 
 // Fix default marker icon issue with webpack
@@ -12,7 +13,7 @@ L.Icon.Default.mergeOptions({
 });
 
 // Ramadan-themed custom SVG markers
-function createSvgIcon(color, glowColor, emoji) {
+function createSvgIcon(color, glowColor, symbolPath) {
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="48" viewBox="0 0 36 48">
       <defs>
@@ -26,7 +27,7 @@ function createSvgIcon(color, glowColor, emoji) {
       <path d="M18 0C9 0 2 7 2 15.5C2 28 18 48 18 48S34 28 34 15.5C34 7 27 0 18 0Z" 
             fill="${color}" filter="url(#glow-${color.replace('#','')})" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
       <circle cx="18" cy="15" r="9" fill="rgba(255,255,255,0.2)"/>
-      <text x="18" y="19" text-anchor="middle" font-size="13">${emoji}</text>
+      ${symbolPath}
     </svg>`;
   return new L.DivIcon({
     html: svg,
@@ -37,9 +38,14 @@ function createSvgIcon(color, glowColor, emoji) {
   });
 }
 
-const needIcon = createSvgIcon('#064E3B', '#10B981', '☪');
-const fundedIcon = createSvgIcon('#B45309', '#FBBF24', '🌙');
-const confirmedIcon = createSvgIcon('#059669', '#34D399', '✓');
+// SVG symbol paths for map markers (renders identically on all platforms)
+const starSymbol = '<path d="M18 8l2 4.5 5 .7-3.6 3.5.9 5-4.3-2.3L13.7 21.7l.9-5L11 13.2l5-.7z" fill="white" opacity="0.9"/>';
+const moonSymbol = '<path d="M20 9a6 6 0 1 0 0 12 4.5 4.5 0 0 1 0-12z" fill="white" opacity="0.9"/>';
+const checkSymbol = '<path d="M12.5 15l3.5 3.5 7-7" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>';
+
+const needIcon = createSvgIcon('#064E3B', '#10B981', starSymbol);
+const fundedIcon = createSvgIcon('#B45309', '#FBBF24', moonSymbol);
+const confirmedIcon = createSvgIcon('#059669', '#34D399', checkSymbol);
 
 function getIcon(status) {
   switch (status) {
@@ -120,7 +126,7 @@ export default function NeedsMap({ needs = [], onNeedClick, height = '400px' }) 
   if (needs.length === 0) {
     return (
       <div className="map-empty-state" style={{ height }}>
-        <div style={{ fontSize: '3rem', marginBottom: '0.75rem', opacity: 0.4 }}>☽</div>
+        <div style={{ fontSize: '3rem', marginBottom: '0.75rem', opacity: 0.4 }}><UIcon name="moon" variant="sr" size={48} /></div>
         <p style={{ color: 'var(--text-muted)', fontWeight: 500 }}>No needs to display on map</p>
       </div>
     );
@@ -129,7 +135,7 @@ export default function NeedsMap({ needs = [], onNeedClick, height = '400px' }) 
   return (
     <div className="map-ramadan-wrapper">
       {/* Decorative crescent */}
-      <div className="map-crescent-decoration" aria-hidden="true">☪</div>
+      <div className="map-crescent-decoration" aria-hidden="true"><UIcon name="moon-stars" variant="sr" /></div>
 
       {/* Map legend */}
       <div className="map-legend">

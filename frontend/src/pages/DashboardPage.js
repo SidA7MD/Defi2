@@ -118,7 +118,7 @@ export default function DashboardPage() {
       )}
 
       <div className="notice notice-info" style={{ marginTop: '2.5rem' }}>
-        <span>🔒</span>
+        <span><UIcon name="lock" size={16} /></span>
         <div>
           {t('dashboard.immutableNotice')}
           <br />

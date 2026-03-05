@@ -118,8 +118,8 @@ export default function NeedsPage() {
                 <p className="need-desc">{need.description}</p>
                 <div className="need-meta">
                   <span>◆ {need.neighborhood}</span>
-                  {need.validator && <span>🛡️ {need.validator.name}</span>}
-                  {need.restaurant && <span>🥘 {need.restaurant.name}</span>}
+                  {need.validator && <span><UIcon name="shield-check" size={13} /> {need.validator.name}</span>}
+                  {need.restaurant && <span><UIcon name="restaurant" size={13} /> {need.restaurant.name}</span>}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                   <span className="need-amount">{need.estimatedAmount?.toLocaleString()} MRU</span>

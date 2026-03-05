@@ -262,7 +262,7 @@ export default function AdminPage() {
                     <div className="admin-section">
                         <h3 className="admin-section-title"><UIcon name="clock" size={16} /> {t('admin.pendingTitle')} ({pendingUsers.length})</h3>
                         {pendingUsers.length === 0 ? (
-                            <EmptyState icon="✓" title={t('admin.noPending')} message={t('admin.noPendingMsg')} />
+                            <EmptyState icon={<UIcon name="check-circle" size={36} />} title={t('admin.noPending')} message={t('admin.noPendingMsg')} />
                         ) : (
                             <div className="admin-users-grid">
                                 {pendingUsers.map((u) => (

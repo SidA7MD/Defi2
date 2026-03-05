@@ -45,7 +45,7 @@ export default function RegisterPage() {
     <div className="auth-page">
       <div className="card auth-card">
         <div className="auth-header">
-          <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem', filter: 'drop-shadow(0 2px 8px rgba(245,158,11,0.3))' }}>☪</div>
+          <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem', filter: 'drop-shadow(0 2px 8px rgba(245,158,11,0.3))' }}><UIcon name="moon-stars" variant="sr" /></div>
           <h2>{t('register.joinIhsan')}</h2>
           <p>{t('register.createAccountDesc')}</p>
         </div>

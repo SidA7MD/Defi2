@@ -1,4 +1,5 @@
 import React from 'react';
+import UIcon from './UIcon';
 
 export function LoadingSpinner({ size = 'md', text = 'Loading...' }) {
   return (
@@ -68,7 +69,7 @@ export function ErrorBoundaryFallback({ error }) {
   return (
     <div className="card" style={{ margin: '2rem auto', maxWidth: '500px' }}>
       <div className="card-body" style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>⚠️</div>
+        <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}><UIcon name="triangle-warning" size={48} color="var(--warning, #f59e0b)" /></div>
         <h3 style={{ color: 'var(--error)', marginBottom: '0.5rem' }}>Something went wrong</h3>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>{error?.message || 'An unexpected error occurred'}</p>
         <button className="btn btn-primary" onClick={() => window.location.reload()}>

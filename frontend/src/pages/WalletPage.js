@@ -41,12 +41,7 @@ function cardBrand(num) {
 }
 
 function brandIcon(brand) {
-  switch (brand) {
-    case 'Visa': return '💳';
-    case 'Mastercard': return '💳';
-    case 'Amex': return '💳';
-    default: return '💳';
-  }
+  return <UIcon name="credit-card" size={16} />;
 }
 
 function TransactionIcon({ type }) {
@@ -128,7 +123,7 @@ export default function WalletPage() {
     fetchWallet();
   });
   useSocket('wallet:bonus', (data) => {
-    toast.success(`✨ ${t('wallet.bonusReceived')}: ${data.amount.toLocaleString()} MRU`);
+    toast.success(`${t('wallet.bonusReceived')}: ${data.amount.toLocaleString()} MRU`);
     fetchWallet();
   });
 
@@ -269,7 +264,7 @@ export default function WalletPage() {
       {/* ===== Balance Hero ===== */}
       <div className="wallet-balance-card">
         <div className="wallet-balance-bg">
-          <div className="wallet-balance-icon">🪙</div>
+          <div className="wallet-balance-icon"><UIcon name="coin" variant="sr" size={28} /></div>
           <p className="wallet-balance-label">{t('wallet.currentBalance')}</p>
           <h2 className="wallet-balance-amount">
             {(wallet?.balance || 0).toLocaleString()} <span className="wallet-balance-currency">MRU</span>
@@ -322,7 +317,7 @@ export default function WalletPage() {
       {/* Restaurant-only info banner */}
       {role === 'RESTAURANT' && depositStep === 'idle' && withdrawStep === 'idle' && (
         <div className="wallet-role-banner wallet-role-restaurant">
-          <span className="wallet-role-banner-icon">🥘</span>
+          <span className="wallet-role-banner-icon"><UIcon name="restaurant" size={20} /></span>
           <div>
             <strong>{t('wallet.restaurantNotice')}</strong>
             <p>{t('wallet.restaurantNoticeDesc')}</p>
@@ -509,7 +504,7 @@ export default function WalletPage() {
                   className={`wallet-method-btn ${withdrawMethod === 'bank' ? 'active' : ''}`}
                   onClick={() => setWithdrawMethod('bank')}
                 >
-                  <span className="wallet-method-icon">🏦</span>
+                  <span className="wallet-method-icon"><UIcon name="building" size={20} /></span>
                   <span className="wallet-method-name">{t('wallet.bankTransfer')}</span>
                   <span className="wallet-method-desc">{t('wallet.bankDesc')}</span>
                 </button>
@@ -517,7 +512,7 @@ export default function WalletPage() {
                   className={`wallet-method-btn ${withdrawMethod === 'card' ? 'active' : ''}`}
                   onClick={() => setWithdrawMethod('card')}
                 >
-                  <span className="wallet-method-icon">💳</span>
+                  <span className="wallet-method-icon"><UIcon name="credit-card" size={20} /></span>
                   <span className="wallet-method-name">{t('wallet.toCardMethod')}</span>
                   <span className="wallet-method-desc">{t('wallet.cardDesc')}</span>
                 </button>
@@ -525,7 +520,7 @@ export default function WalletPage() {
                   className={`wallet-method-btn ${withdrawMethod === 'mobile' ? 'active' : ''}`}
                   onClick={() => setWithdrawMethod('mobile')}
                 >
-                  <span className="wallet-method-icon">📱</span>
+                  <span className="wallet-method-icon"><UIcon name="mobile-notch" size={20} /></span>
                   <span className="wallet-method-name">{t('wallet.mobileMoney')}</span>
                   <span className="wallet-method-desc">{t('wallet.mobileDesc')}</span>
                 </button>

@@ -60,12 +60,12 @@ export default function DonorPage() {
   }, [fetchData]);
 
   useSocket('impact:proof', useCallback(() => {
-    toast.success(t('donor.proofReceived'), { duration: 6000, icon: '✨' });
+    toast.success(t('donor.proofReceived'), { duration: 6000, icon: '✦' });
     fetchData();
   }, [fetchData, t]));
 
   useSocket('donation:proof', useCallback(() => {
-    toast.success(t('donor.donationConfirmed'), { duration: 6000, icon: '✓' });
+    toast.success(t('donor.donationConfirmed'), { duration: 6000, icon: '✔' });
     fetchData();
   }, [fetchData, t]));
 
@@ -82,7 +82,7 @@ export default function DonorPage() {
     <div className="container">
       {/* Donor Profile Header */}
       <div className="app-profile-header">
-        <div className="app-profile-avatar">🤲</div>
+        <div className="app-profile-avatar"><UIcon name="hand-holding-heart" size={32} /></div>
         <div className="app-profile-info">
           <h1 className="app-profile-name">{donorInfo?.name || user.name}</h1>
           <div className="app-profile-meta">
@@ -119,7 +119,7 @@ export default function DonorPage() {
       {/* Pending Notice Banner */}
       {pending.length > 0 && (
         <div className="app-pending-banner">
-          <div className="app-pending-banner-icon">⏳</div>
+          <div className="app-pending-banner-icon"><UIcon name="clock" size={20} /></div>
           <div>
             <strong>{pending.length} {t('donor.pendingNotice')}</strong>
             <span className="app-pending-amount">
@@ -154,7 +154,7 @@ export default function DonorPage() {
       {/* Donation Cards */}
       {filtered.length === 0 ? (
         <EmptyState
-          icon="🤲"
+          icon={<UIcon name="hand-holding-heart" size={36} />}
           title={activeTab === 'all' ? t('donor.noDonations') : activeTab === 'pending' ? t('donor.noPending') : t('donor.noConfirmed')}
           message={activeTab === 'all' ? t('donor.noDonationsMsg') : activeTab === 'pending' ? t('donor.noPendingMsg') : t('donor.noConfirmedMsg')}
         />

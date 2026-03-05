@@ -14,7 +14,7 @@ export default function Footer() {
           {/* Brand column */}
           <div>
             <div className="footer-brand">
-              <span className="footer-brand-icon">☪</span>
+              <span className="footer-brand-icon"><UIcon name="moon-stars" variant="sr" /></span>
               <span>{t('appName')}</span>
               <span style={{ fontSize: '0.875rem', color: 'var(--primary-500)', fontWeight: 500 }}>
                 {t('appNameArabic')}
@@ -41,7 +41,7 @@ export default function Footer() {
             <div className="footer-links-list">
               <Link to="/register"><UIcon name="heart" size={14} /> {t('register.roleDonor')}</Link>
               <Link to="/register"><UIcon name="shield" size={14} /> {t('register.roleValidator')}</Link>
-              <Link to="/register">🥘 {t('register.roleRestaurant')}</Link>
+              <Link to="/register"><UIcon name="restaurant" size={14} /> {t('register.roleRestaurant')}</Link>
             </div>
           </div>
         </div>

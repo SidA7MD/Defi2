@@ -83,7 +83,7 @@ export default function RestaurantPage() {
 
   useSocket('order:new', useCallback((data) => {
     const msg = t('restaurant.newOrder');
-    toast.success(typeof msg === 'function' ? msg(data.description) : msg, { duration: 6000, icon: '✨' });
+    toast.success(typeof msg === 'function' ? msg(data.description) : msg, { duration: 6000, icon: '✦' });
     fetchData();
   }, [fetchData, t]));
 
@@ -92,7 +92,7 @@ export default function RestaurantPage() {
   }, [fetchData]));
 
   useSocket('need:funded', useCallback(() => {
-    toast.success(t('restaurant.newOrderFunded'), { duration: 5000, icon: '🪙' });
+    toast.success(t('restaurant.newOrderFunded'), { duration: 5000, icon: '●' });
     fetchData();
   }, [fetchData, t]));
 
@@ -100,7 +100,7 @@ export default function RestaurantPage() {
     setConfirming(needId);
     try {
       await needService.confirmByRestaurant(needId, t('restaurant.defaultConfirmMsg'));
-      toast.success(t('restaurant.confirmSuccess'), { icon: '✓' });
+      toast.success(t('restaurant.confirmSuccess'), { icon: '✔' });
       fetchData();
     } catch (err) {
       toast.error(err.response?.data?.message || t('restaurant.confirmFailed'));
@@ -179,7 +179,7 @@ export default function RestaurantPage() {
     <div className="container">
       {/* Restaurant Profile Header */}
       <div className="app-profile-header">
-        <div className="app-profile-avatar">🥘</div>
+        <div className="app-profile-avatar"><UIcon name="restaurant" size={32} /></div>
         <div className="app-profile-info">
           <h1 className="app-profile-name">{restaurantInfo?.name || user.name}</h1>
           <div className="app-profile-meta">
@@ -294,7 +294,7 @@ export default function RestaurantPage() {
       {/* Pending Revenue Banner */}
       {funded.length > 0 && (
         <div className="app-pending-banner app-pending-urgent">
-          <div className="app-pending-banner-icon">🔴</div>
+          <div className="app-pending-banner-icon"><UIcon name="circle-small" variant="sr" color="#ef4444" size={24} /></div>
           <div className="app-pending-content">
             <strong>{funded.length} {t('restaurant.ordersPending')}</strong>
             <span className="app-pending-amount">{totalFundedAmount.toLocaleString()} MRU</span>
@@ -459,7 +459,7 @@ export default function RestaurantPage() {
       {activeTab === 'pending' && (
         <>
           {filteredOrders.length === 0 ? (
-            <EmptyState icon="🥘" title={t('restaurant.noPending')} message={t('restaurant.noPendingMsg')} />
+            <EmptyState icon={<UIcon name="restaurant" size={36} />} title={t('restaurant.noPending')} message={t('restaurant.noPendingMsg')} />
           ) : (
             <div className="app-orders-grid">
               {filteredOrders.map((need) => {
@@ -513,7 +513,7 @@ export default function RestaurantPage() {
                           <div className="app-app-avatars">
                             {need.donations.slice(0, 3).map((d) => (
                               <span key={d.id} className="app-app-avatar" title={d.donor?.name || 'Anonymous'}>
-                                🤲
+                                <UIcon name="hand-holding-heart" size={16} />
                               </span>
                             ))}
                             {need.donations.length > 3 && (
@@ -546,7 +546,7 @@ export default function RestaurantPage() {
       {activeTab === 'completed' && (
         <>
           {filteredOrders.length === 0 ? (
-            <EmptyState icon="✓" title={t('restaurant.noCompleted')} message={t('restaurant.noCompletedMsg')} />
+            <EmptyState icon={<UIcon name="check-circle" size={36} />} title={t('restaurant.noCompleted')} message={t('restaurant.noCompletedMsg')} />
           ) : (
             <div className="app-orders-grid">
               {filteredOrders.map((need) => {

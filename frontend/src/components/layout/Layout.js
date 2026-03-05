@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import UIcon from '../common/UIcon';
 import './Layout.css';
 
 function RamadanLantern({ side, delay, size = 'md' }) {
@@ -39,8 +40,8 @@ export default function Layout({ children }) {
       </div>
       {/* Floating crescent moons */}
       <div className="layout-moons" aria-hidden="true">
-        <span className="layout-moon layout-moon-1">🌙</span>
-        <span className="layout-moon layout-moon-2">🌙</span>
+        <span className="layout-moon layout-moon-1"><UIcon name="moon" variant="sr" /></span>
+        <span className="layout-moon layout-moon-2"><UIcon name="moon" variant="sr" /></span>
       </div>
       <main className="main-content" style={{ flex: 1 }}>
         {children}

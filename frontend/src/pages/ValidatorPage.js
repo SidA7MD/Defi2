@@ -76,7 +76,7 @@ export default function ValidatorPage() {
 
   useSocket('need:funded', useCallback((data) => {
     const msg = t('validator.needFunded');
-    toast.success(typeof msg === 'function' ? msg(data.description) : msg, { duration: 6000, icon: '✨' });
+    toast.success(typeof msg === 'function' ? msg(data.description) : msg, { duration: 6000, icon: '✦' });
     fetchData();
   }, [fetchData, t]));
 
@@ -128,7 +128,7 @@ export default function ValidatorPage() {
     <div className="container">
       {/* Validator Profile Header */}
       <div className="app-profile-header">
-        <div className="app-profile-avatar">⭐</div>
+        <div className="app-profile-avatar"><UIcon name="star" variant="sr" size={32} /></div>
         <div className="app-profile-info">
           <h1 className="app-profile-name">{validatorInfo?.name || user.name}</h1>
           <div className="app-profile-meta">
@@ -356,7 +356,7 @@ export default function ValidatorPage() {
       {/* Confirmed Needs Tab */}
       {tab === 'confirmed' && (
         confirmedNeeds.length === 0 ? (
-          <EmptyState icon="✓" title={t('validator.noConfirmed')} />
+          <EmptyState icon={<UIcon name="check-circle" size={36} />} title={t('validator.noConfirmed')} />
         ) : (
           <div className="app-orders-grid">
             {confirmedNeeds.map((need) => (

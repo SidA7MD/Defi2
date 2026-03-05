@@ -86,11 +86,11 @@ export default function HomePage() {
 
         {/* Floating crescent moons */}
         <div className="hero-moons" aria-hidden="true">
-          <span className="floating-moon moon-1">🌙</span>
-          <span className="floating-moon moon-2">🌙</span>
-          <span className="floating-moon moon-3">🌙</span>
-          <span className="floating-moon moon-4">🌙</span>
-          <span className="floating-moon moon-5">🌙</span>
+          <span className="floating-moon moon-1"><UIcon name="moon" variant="sr" /></span>
+          <span className="floating-moon moon-2"><UIcon name="moon" variant="sr" /></span>
+          <span className="floating-moon moon-3"><UIcon name="moon" variant="sr" /></span>
+          <span className="floating-moon moon-4"><UIcon name="moon" variant="sr" /></span>
+          <span className="floating-moon moon-5"><UIcon name="moon" variant="sr" /></span>
         </div>
 
         <div className="container">
@@ -101,7 +101,7 @@ export default function HomePage() {
             </div>
 
             <h1 className="hero-title">
-              <span className="hero-icon">☪</span>
+              <span className="hero-icon"><UIcon name="moon-stars" variant="sr" /></span>
               {t('appName')} <span className="hero-arabic">{t('appNameArabic')}</span>
             </h1>
 
@@ -169,8 +169,8 @@ export default function HomePage() {
 
       {/* ===== HOW IT WORKS ===== */}
       <section className="how-it-works container" style={{ position: 'relative' }}>
-        <span className="section-moon section-moon-left" aria-hidden="true">🌙</span>
-        <span className="section-moon section-moon-right" aria-hidden="true">🌙</span>
+        <span className="section-moon section-moon-left" aria-hidden="true"><UIcon name="moon" variant="sr" /></span>
+        <span className="section-moon section-moon-right" aria-hidden="true"><UIcon name="moon" variant="sr" /></span>
         <div className="section-header">
           <span className="section-label">✦ {t('home.howItWorks')}</span>
           <h2 className="section-title">{t('home.howItWorks')}</h2>
@@ -184,12 +184,12 @@ export default function HomePage() {
             <p>{t('home.targetedDesc')}</p>
           </div>
           <div className="feature-card">
-            <div className="feature-icon-wrapper gold">🔒</div>
+            <div className="feature-icon-wrapper gold"><UIcon name="lock" /></div>
             <h3>{t('home.privacyPreserved')}</h3>
             <p>{t('home.privacyDesc')}</p>
           </div>
           <div className="feature-card">
-            <div className="feature-icon-wrapper blue">✓</div>
+            <div className="feature-icon-wrapper blue"><UIcon name="check-circle" /></div>
             <h3>{t('home.verifiedImpact')}</h3>
             <p>{t('home.verifiedDesc')}</p>
           </div>
@@ -221,7 +221,7 @@ export default function HomePage() {
             <div className="trust-arrow">→</div>
             <div className="trust-step">
               <div className="step-number">3</div>
-              <div className="step-icon">🥘</div>
+              <div className="step-icon"><UIcon name="restaurant" size={32} /></div>
               <h4>{t('home.step3Title')}</h4>
               <p>{t('home.step3Desc')}</p>
             </div>
@@ -239,8 +239,8 @@ export default function HomePage() {
       {/* ===== CTA ===== */}
       <section className="cta-section">
         <div className="cta-lanterns" aria-hidden="true">
-          <div className="cta-lantern cta-lantern-left">🕌</div>
-          <div className="cta-lantern cta-lantern-right">🕌</div>
+          <div className="cta-lantern cta-lantern-left"><UIcon name="building" size={28} /></div>
+          <div className="cta-lantern cta-lantern-right"><UIcon name="building" size={28} /></div>
         </div>
         <div className="container">
           <h2>{t('home.ctaTitle')}</h2>

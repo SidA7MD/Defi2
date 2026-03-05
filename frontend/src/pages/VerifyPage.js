@@ -143,7 +143,7 @@ export default function VerifyPage() {
                   <hr style={{ border: 'none', borderTop: '1px solid var(--border-color)' }} />
                   <div style={{ background: 'var(--primary-50)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
                     <div style={{ fontWeight: 600, color: 'var(--primary-800)', marginBottom: '0.5rem' }}>
-                      ✓ {t('verify.impactProof')}
+                      <UIcon name="check-circle" size={14} /> {t('verify.impactProof')}
                     </div>
                     <p style={{ fontSize: '0.9rem' }}>{result.transaction.impactProof.confirmationMessage}</p>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
