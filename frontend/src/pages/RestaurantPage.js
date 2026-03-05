@@ -191,12 +191,30 @@ export default function RestaurantPage() {
           </div>
         </div>
         <button
-          className="btn btn-secondary app-refresh-btn"
+          className="app-refresh-btn-mobile"
           onClick={handleRefresh}
           disabled={refreshing}
           title={t('restaurant.refresh')}
+          style={{
+            position: 'absolute',
+            top: '0.75rem',
+            right: '0.75rem',
+            width: '2rem',
+            height: '2rem',
+            borderRadius: '50%',
+            border: '1.5px solid #fed7aa',
+            background: 'white',
+            color: '#d97706',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            padding: 0,
+            boxShadow: '0 2px 8px rgba(251,146,60,0.15)',
+            zIndex: 10,
+          }}
         >
-          <UIcon name="refresh" size={16} className={refreshing ? 'spinning' : ''} />
+          <UIcon name="refresh" size={14} className={refreshing ? 'spinning' : ''} />
         </button>
       </div>
 
