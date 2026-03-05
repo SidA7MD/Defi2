@@ -184,7 +184,7 @@ export default function HomePage() {
             <p>{t('home.targetedDesc')}</p>
           </div>
           <div className="feature-card">
-            <div className="feature-icon-wrapper gold">☢</div>
+            <div className="feature-icon-wrapper gold">🔒</div>
             <h3>{t('home.privacyPreserved')}</h3>
             <p>{t('home.privacyDesc')}</p>
           </div>
