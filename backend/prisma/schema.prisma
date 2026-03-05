@@ -1,0 +1,220 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+//  USERS & AUTH
+// ─────────────────────────────────────────────
+
+model User {
+  id               String     @id @default(uuid())
+  name             String
+  email            String     @unique
+  passwordHash     String     @map("password_hash")
+  role             String     // DONOR, VALIDATOR, RESTAURANT, ADMIN
+  isApproved       Boolean    @default(false) @map("is_approved")
+  approvedBy       String?    @map("approved_by")
+  reputationScore  Int        @default(0) @map("reputation_score")
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+
+  // Relations
+  donations        Donation[]
+  validatedNeeds   Need[]         @relation("ValidatorNeeds")
+  beneficiaries    Beneficiary[]
+  restaurant       Restaurant?
+  wallet           Wallet?
+  refreshTokens    RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+// ─────────────────────────────────────────────
+//  WALLET & TRANSACTIONS
+// ─────────────────────────────────────────────
+
+model Wallet {
+  id           String              @id @default(uuid())
+  userId       String              @unique @map("user_id")
+  balance      Decimal             @default(0)
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+
+  // Relations
+  user         User                @relation(fields: [userId], references: [id])
+  transactions WalletTransaction[]
+
+  @@map("wallets")
+}
+
+model WalletTransaction {
+  id          String   @id @default(uuid())
+  walletId    String   @map("wallet_id")
+  type        String   // DEPOSIT, DONATION, BONUS, REWARD
+  amount      Decimal
+  description String
+  reference   String?  // e.g. donationId or promo code
+  balanceAfter Decimal @map("balance_after")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  wallet      Wallet   @relation(fields: [walletId], references: [id])
+
+  @@map("wallet_transactions")
+}
+
+// ─────────────────────────────────────────────
+//  BENEFICIARIES (Private — never exposed via public API)
+// ─────────────────────────────────────────────
+
+model Beneficiary {
+  id            String   @id @default(uuid())
+  validatorId   String   @map("validator_id")
+  neighborhood  String
+  lat           Float
+  lng           Float
+  internalNotes String?  @map("internal_notes")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  validator     User     @relation(fields: [validatorId], references: [id])
+  needs         Need[]
+
+  @@map("beneficiaries")
+}
+
+// ─────────────────────────────────────────────
+//  NEEDS
+// ─────────────────────────────────────────────
+
+model Need {
+  id              String     @id @default(uuid())
+  validatorId     String     @map("validator_id")
+  beneficiaryId   String?    @map("beneficiary_id")
+  type            String
+  description     String
+  neighborhood    String
+  estimatedAmount Decimal    @map("estimated_amount")
+  status          String     @default("OPEN") // OPEN, FUNDED, CONFIRMED, CANCELLED
+  lat             Float
+  lng             Float
+  restaurantId    String?    @map("restaurant_id")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  lockedAt        DateTime?  @map("locked_at")
+
+  // Relations
+  validator       User       @relation("ValidatorNeeds", fields: [validatorId], references: [id])
+  beneficiary     Beneficiary? @relation(fields: [beneficiaryId], references: [id])
+  restaurant      Restaurant? @relation(fields: [restaurantId], references: [id])
+  donations       Donation[]
+
+  @@index([status])
+  @@index([validatorId])
+  @@index([restaurantId])
+  @@map("needs")
+}
+
+// ─────────────────────────────────────────────
+//  DONATIONS
+// ─────────────────────────────────────────────
+
+model Donation {
+  id              String         @id @default(uuid())
+  donorId         String         @map("donor_id")
+  needId          String         @map("need_id")
+  amount          Decimal
+  transactionHash String         @unique @map("transaction_hash")
+  previousHash    String?        @map("previous_hash") // Hash chain: links to prior donation hash
+  blockchainHash  String?        @map("blockchain_hash")
+  status          String         @default("PENDING") // PENDING, CONFIRMED
+  createdAt       DateTime       @default(now()) @map("created_at")
+  confirmedAt     DateTime?      @map("confirmed_at")
+  immutable       Boolean        @default(false)
+  flagged         Boolean        @default(false)
+  flagReason      String?        @map("flag_reason")
+
+  // Relations
+  donor           User           @relation(fields: [donorId], references: [id])
+  need            Need           @relation(fields: [needId], references: [id])
+  impactProof     ImpactProof?
+
+  @@index([donorId])
+  @@index([status])
+  @@index([donorId, status])
+  @@map("donations")
+}
+
+// ─────────────────────────────────────────────
+//  IMPACT PROOFS
+// ─────────────────────────────────────────────
+
+model ImpactProof {
+  id                  String   @id @default(uuid())
+  donationId          String   @unique @map("donation_id")
+  photoUrl            String?  @map("photo_url")
+  confirmationMessage String   @map("confirmation_message")
+  confirmedAt         DateTime @default(now()) @map("confirmed_at")
+
+  // Relations
+  donation            Donation @relation(fields: [donationId], references: [id])
+
+  @@map("impact_proofs")
+}
+
+// ─────────────────────────────────────────────
+//  RESTAURANTS (Partner)
+// ─────────────────────────────────────────────
+
+model Restaurant {
+  id           String   @id @default(uuid())
+  userId       String   @unique @map("user_id")
+  name         String
+  neighborhood String
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user         User     @relation(fields: [userId], references: [id])
+  needs        Need[]
+
+  @@map("restaurants")
+}
+
+// ─────────────────────────────────────────────
+//  AUDIT LOG — Immutable append-only trail
+// ─────────────────────────────────────────────
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String   @map("actor_id")
+  action     String   // CREATE_NEED, FUND_NEED, CONFIRM_DONATION, LOGIN, REGISTER, etc.
+  entityType String   @map("entity_type") // User, Need, Donation, ImpactProof
+  entityId   String   @map("entity_id")
+  metadata   String?  // JSON string with details
+  ipAddress  String?  @map("ip_address")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([actorId])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@map("audit_logs")
+}
