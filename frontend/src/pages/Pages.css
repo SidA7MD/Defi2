@@ -4161,23 +4161,32 @@
 /* ---- Responsive App Components ---- */
 @media (max-width: 768px) {
   .app-profile-header {
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
     padding: 1.25rem;
-    gap: 1rem;
+    gap: 0.75rem;
+    position: relative;
   }
 
   .app-profile-avatar {
-    width: 60px;
-    height: 60px;
-    font-size: 2rem;
+    width: 56px;
+    height: 56px;
+    font-size: 1.75rem;
   }
 
   .app-profile-name {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
+    padding-right: 3rem;
+  }
+
+  [dir="rtl"] .app-profile-name {
+    padding-right: 0;
+    padding-left: 3rem;
   }
 
   .app-profile-meta {
-    gap: 0.625rem;
+    flex-direction: column;
+    gap: 0.4rem;
     font-size: 0.775rem;
   }
 
@@ -4185,6 +4194,8 @@
     position: absolute;
     top: 1.25rem;
     right: 1.25rem;
+    width: 38px;
+    height: 38px;
   }
 
   [dir="rtl"] .app-refresh-btn {
@@ -4194,19 +4205,38 @@
 
   .app-stats-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
+    gap: 0.625rem;
   }
 
   .app-stat-card {
-    padding: 1rem 0.875rem;
+    padding: 0.875rem 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .app-stat-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
   }
 
   .app-stat-value {
-    font-size: 1.375rem;
+    font-size: 1.25rem;
+  }
+
+  .app-stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.03em;
   }
 
   .app-weekly-chart {
-    padding: 1.25rem;
+    padding: 1rem;
+  }
+
+  .app-weekly-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   .app-weekly-bars {
@@ -4218,8 +4248,28 @@
     font-size: 0.6rem;
   }
 
+  .app-weekly-count {
+    font-size: 0.6rem;
+  }
+
   .app-orders-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .app-order-inner {
+    padding: 1.125rem;
+    gap: 0.75rem;
+  }
+
+  .app-order-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .app-header-right {
+    flex-wrap: wrap;
+    gap: 0.375rem;
   }
 
   .app-filter-bar {
@@ -4232,9 +4282,22 @@
   }
 
   .app-pending-banner {
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
     padding: 1rem;
-    gap: 0.875rem;
+    gap: 0.75rem;
+  }
+
+  .app-pending-banner .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .app-info-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+    gap: 0.5rem;
   }
 
   .app-profile-header .btn {
@@ -4247,30 +4310,131 @@
     flex-direction: column;
   }
 
+  .app-confirmed-tag {
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .app-donors-preview {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
   .panel-tabs {
     gap: 0;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+  }
+
+  .panel-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .panel-tab {
-    padding: 0.5rem 0.625rem;
-    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
     flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .app-order-desc {
+    font-size: 0.875rem;
+  }
+
+  .app-detail-item {
+    font-size: 0.775rem;
+  }
+
+  .app-order-details {
+    padding: 0.75rem;
+  }
+
+  .app-need-type {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.625rem;
+  }
+
+  .app-confirm-btn {
+    padding: 0.75rem !important;
+    font-size: 0.85rem;
+  }
+
+  .app-results-count {
+    flex-wrap: wrap;
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .app-stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .app-stat-card {
+    padding: 0.75rem 0.625rem;
+  }
+
+  .app-stat-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+    border-radius: var(--radius-md);
+  }
+
+  .app-stat-value {
+    font-size: 1.125rem;
+  }
+
+  .app-stat-label {
+    font-size: 0.6rem;
   }
 
   .app-profile-header {
     padding: 1rem;
   }
 
+  .app-profile-avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+  }
+
+  .app-profile-name {
+    font-size: 1.1rem;
+  }
+
+  .app-weekly-chart {
+    padding: 0.875rem;
+  }
+
+  .app-weekly-bars {
+    height: 70px;
+  }
+
+  .app-weekly-title h3 {
+    font-size: 0.9rem;
+  }
+
   .panel-tab {
-    font-size: 0.65rem;
-    padding: 0.4rem 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.45rem 0.625rem;
+  }
+
+  .app-order-inner {
+    padding: 1rem;
+  }
+
+  .app-pending-content strong {
+    font-size: 0.875rem;
+  }
+
+  .app-pending-amount {
+    font-size: 0.9rem;
   }
 }
