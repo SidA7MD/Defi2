@@ -83,7 +83,7 @@ export default function AdminDonations() {
                 </div>
 
                 {donations.length === 0 ? (
-                    <EmptyState icon={<UIcon name="coin" variant="sr" size={36} />} title={t('admin.noDonationsFound')} message={t('admin.tryDifferentFilter')} />
+                    <EmptyState icon={<UIcon name="coin" variant="sr" size={36} color="#eab308" />} title={t('admin.noDonationsFound')} message={t('admin.tryDifferentFilter')} />
                 ) : (
                     <div className="admin-table-wrap">
                         <table className="admin-table">

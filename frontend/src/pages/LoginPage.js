@@ -38,7 +38,7 @@ export default function LoginPage() {
     <div className="auth-page">
       <div className="card auth-card">
         <div className="auth-header">
-          <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem', filter: 'drop-shadow(0 2px 8px rgba(245,158,11,0.3))' }}><UIcon name="moon-stars" variant="sr" /></div>
+          <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem', filter: 'drop-shadow(0 2px 8px rgba(245,158,11,0.3))' }}><UIcon name="moon-stars" variant="sr" color="#f59e0b" /></div>
           <h2>{t('login.welcomeBack')}</h2>
           <p>{t('login.signInTo')}</p>
         </div>

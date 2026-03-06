@@ -40,8 +40,8 @@ export default function Layout({ children }) {
       </div>
       {/* Floating crescent moons */}
       <div className="layout-moons" aria-hidden="true">
-        <span className="layout-moon layout-moon-1"><UIcon name="moon" variant="sr" /></span>
-        <span className="layout-moon layout-moon-2"><UIcon name="moon" variant="sr" /></span>
+        <span className="layout-moon layout-moon-1"><UIcon name="moon" variant="sr" color="#f59e0b" /></span>
+        <span className="layout-moon layout-moon-2"><UIcon name="moon" variant="sr" color="#f59e0b" /></span>
       </div>
       <main className="main-content" style={{ flex: 1 }}>
         {children}

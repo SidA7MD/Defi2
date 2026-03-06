@@ -105,7 +105,7 @@ export default function Navbar() {
       <nav className="navbar">
         <div className="navbar-inner">
           <Link to="/" className="navbar-brand" onClick={() => setMobileOpen(false)}>
-            <span className="brand-icon"><UIcon name="moon-stars" variant="sr" /></span>
+            <span className="brand-icon"><UIcon name="moon-stars" variant="sr" color="#f59e0b" /></span>
             <span className="brand-text">{t('appName')}</span>
             <span className="brand-arabic">{t('appNameArabic')}</span>
           </Link>

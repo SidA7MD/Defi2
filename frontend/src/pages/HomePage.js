@@ -86,11 +86,11 @@ export default function HomePage() {
 
         {/* Floating crescent moons */}
         <div className="hero-moons" aria-hidden="true">
-          <span className="floating-moon moon-1"><UIcon name="moon" variant="sr" /></span>
-          <span className="floating-moon moon-2"><UIcon name="moon" variant="sr" /></span>
-          <span className="floating-moon moon-3"><UIcon name="moon" variant="sr" /></span>
-          <span className="floating-moon moon-4"><UIcon name="moon" variant="sr" /></span>
-          <span className="floating-moon moon-5"><UIcon name="moon" variant="sr" /></span>
+          <span className="floating-moon moon-1"><UIcon name="moon" variant="sr" color="#f59e0b" /></span>
+          <span className="floating-moon moon-2"><UIcon name="moon" variant="sr" color="#f59e0b" /></span>
+          <span className="floating-moon moon-3"><UIcon name="moon" variant="sr" color="#f59e0b" /></span>
+          <span className="floating-moon moon-4"><UIcon name="moon" variant="sr" color="#f59e0b" /></span>
+          <span className="floating-moon moon-5"><UIcon name="moon" variant="sr" color="#f59e0b" /></span>
         </div>
 
         <div className="container">
@@ -101,7 +101,7 @@ export default function HomePage() {
             </div>
 
             <h1 className="hero-title">
-              <span className="hero-icon"><UIcon name="moon-stars" variant="sr" /></span>
+              <span className="hero-icon"><UIcon name="moon-stars" variant="sr" color="#f59e0b" /></span>
               {t('appName')} <span className="hero-arabic">{t('appNameArabic')}</span>
             </h1>
 
@@ -177,8 +177,8 @@ export default function HomePage() {
 
       {/* ===== HOW IT WORKS ===== */}
       <section className="how-it-works container" style={{ position: 'relative' }}>
-        <span className="section-moon section-moon-left" aria-hidden="true"><UIcon name="moon" variant="sr" /></span>
-        <span className="section-moon section-moon-right" aria-hidden="true"><UIcon name="moon" variant="sr" /></span>
+        <span className="section-moon section-moon-left" aria-hidden="true"><UIcon name="moon" variant="sr" color="#f59e0b" /></span>
+        <span className="section-moon section-moon-right" aria-hidden="true"><UIcon name="moon" variant="sr" color="#f59e0b" /></span>
         <div className="section-header">
           <span className="section-label">✦ {t('home.howItWorks')}</span>
           <h2 className="section-title">{t('home.howItWorks')}</h2>

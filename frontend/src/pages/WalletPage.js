@@ -264,7 +264,7 @@ export default function WalletPage() {
       {/* ===== Balance Hero ===== */}
       <div className="wallet-balance-card">
         <div className="wallet-balance-bg">
-          <div className="wallet-balance-icon"><UIcon name="coin" variant="sr" size={28} /></div>
+          <div className="wallet-balance-icon"><UIcon name="coin" variant="sr" size={28} color="#eab308" /></div>
           <p className="wallet-balance-label">{t('wallet.currentBalance')}</p>
           <h2 className="wallet-balance-amount">
             {(wallet?.balance || 0).toLocaleString()} <span className="wallet-balance-currency">MRU</span>

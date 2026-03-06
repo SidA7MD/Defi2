@@ -126,7 +126,7 @@ export default function NeedsMap({ needs = [], onNeedClick, height = '400px' }) 
   if (needs.length === 0) {
     return (
       <div className="map-empty-state" style={{ height }}>
-        <div style={{ fontSize: '3rem', marginBottom: '0.75rem', opacity: 0.4 }}><UIcon name="moon" variant="sr" size={48} /></div>
+        <div style={{ fontSize: '3rem', marginBottom: '0.75rem', opacity: 0.4 }}><UIcon name="moon" variant="sr" size={48} color="#f59e0b" /></div>
         <p style={{ color: 'var(--text-muted)', fontWeight: 500 }}>No needs to display on map</p>
       </div>
     );
@@ -135,7 +135,7 @@ export default function NeedsMap({ needs = [], onNeedClick, height = '400px' }) 
   return (
     <div className="map-ramadan-wrapper">
       {/* Decorative crescent */}
-      <div className="map-crescent-decoration" aria-hidden="true"><UIcon name="moon-stars" variant="sr" /></div>
+      <div className="map-crescent-decoration" aria-hidden="true"><UIcon name="moon-stars" variant="sr" color="#f59e0b" /></div>
 
       {/* Map legend */}
       <div className="map-legend">

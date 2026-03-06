@@ -132,7 +132,7 @@ export default function DonatePage() {
                 {/* Wallet balance info */}
                 <hr style={{ border: 'none', borderTop: '1px solid var(--border-color)', margin: '0.5rem 0' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--text-secondary)' }}><UIcon name="coin" size={14} /> {t('donate.walletBalance')}</span>
+                  <span style={{ color: 'var(--text-secondary)' }}><UIcon name="coin" size={14} color="#eab308" /> {t('donate.walletBalance')}</span>
                   <span style={{ fontWeight: 600, color: walletBalance >= need.estimatedAmount ? 'var(--success)' : 'var(--danger, #e53e3e)' }}>
                     {walletBalance != null ? `${walletBalance.toLocaleString()} MRU` : '—'}
                   </span>
@@ -161,7 +161,7 @@ export default function DonatePage() {
                 onClick={handleDonate}
                 disabled={need.status !== 'OPEN' || (walletBalance != null && walletBalance < need.estimatedAmount)}
               >
-                <UIcon name="coin" size={16} /> {t('donate.pay')} {need.estimatedAmount?.toLocaleString()} MRU
+                <UIcon name="coin" size={16} color="#eab308" /> {t('donate.pay')} {need.estimatedAmount?.toLocaleString()} MRU
               </button>
             </div>
           </div>
@@ -195,7 +195,7 @@ export default function DonatePage() {
 
           <div className="receipt">
             <div className="receipt-header">
-              <h3><UIcon name="moon-stars" variant="sr" size={18} /> {t('donate.receiptTitle')}</h3>
+              <h3><UIcon name="moon-stars" variant="sr" size={18} color="#f59e0b" /> {t('donate.receiptTitle')}</h3>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>{t('donate.receiptSubtitle')}</p>
             </div>
 
