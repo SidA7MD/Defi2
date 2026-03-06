@@ -117,7 +117,7 @@ export default function NeedsPage() {
                 </div>
                 <p className="need-desc">{need.description}</p>
                 <div className="need-meta">
-                  <span>◆ {need.neighborhood}</span>
+                  <span><UIcon name="map-marker" size={16} /> {need.neighborhood}</span>
                   {need.validator && <span><UIcon name="shield-check" size={13} /> {need.validator.name}</span>}
                   {need.restaurant && <span><UIcon name="restaurant" size={13} /> {need.restaurant.name}</span>}
                 </div>
