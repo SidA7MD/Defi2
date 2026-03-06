@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, getProfile, refreshToken, logout } = require('../controllers/authController');
+const { register, login, getProfile, refreshToken, logout, updateProfile, updateSettings, changePassword, getActivities } = require('../controllers/authController');
 const { authenticate } = require('../middlewares/auth');
 const { registerRules, loginRules, refreshTokenRules, validate } = require('../middlewares/validators');
 
@@ -12,5 +12,9 @@ router.post('/logout', logout);
 
 // Protected
 router.get('/profile', authenticate, getProfile);
+router.patch('/profile', authenticate, updateProfile);
+router.patch('/settings', authenticate, updateSettings);
+router.patch('/password', authenticate, changePassword);
+router.get('/activities', authenticate, getActivities);
 
 module.exports = router;

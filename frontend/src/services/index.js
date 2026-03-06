@@ -4,6 +4,10 @@ export const authService = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
   getProfile: () => api.get('/auth/profile'),
+  updateProfile: (data) => api.patch('/auth/profile', data),
+  updateSettings: (data) => api.patch('/auth/settings', data),
+  changePassword: (data) => api.patch('/auth/password', data),
+  getActivities: (limit = 20) => api.get('/auth/activities', { params: { limit } }),
 };
 
 export const needService = {

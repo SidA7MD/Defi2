@@ -67,4 +67,80 @@ const logout = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { register, login, getProfile, refreshToken, logout };
+const updateProfile = asyncHandler(async (req, res) => {
+  const updated = await authService.updateProfile(req.user.id, req.body);
+
+  await auditLogService.log(
+    req.user.id,
+    'UPDATE_PROFILE',
+    'User',
+    req.user.id,
+    { fields: Object.keys(req.body) },
+    req.ip
+  );
+
+  res.json({
+    success: true,
+    message: 'Profile updated',
+    data: updated,
+  });
+});
+
+const updateSettings = asyncHandler(async (req, res) => {
+  const updated = await authService.updateSettings(req.user.id, req.body);
+
+  await auditLogService.log(
+    req.user.id,
+    'UPDATE_SETTINGS',
+    'User',
+    req.user.id,
+    { fields: Object.keys(req.body) },
+    req.ip
+  );
+
+  res.json({
+    success: true,
+    message: 'Settings updated',
+    data: updated,
+  });
+});
+
+const changePassword = asyncHandler(async (req, res) => {
+  await authService.changePassword(req.user.id, req.body);
+
+  await auditLogService.log(
+    req.user.id,
+    'CHANGE_PASSWORD',
+    'User',
+    req.user.id,
+    {},
+    req.ip
+  );
+
+  res.json({
+    success: true,
+    message: 'Password changed successfully',
+  });
+});
+
+const getActivities = asyncHandler(async (req, res) => {
+  const limit = parseInt(req.query.limit) || 20;
+  const activities = await auditLogService.getByActor(req.user.id, limit);
+
+  // Transform activities to be more user-friendly
+  const transformedActivities = activities.map(activity => ({
+    id: activity.id,
+    action: activity.action,
+    entityType: activity.entityType,
+    entityId: activity.entityId,
+    metadata: activity.metadata ? JSON.parse(activity.metadata) : {},
+    createdAt: activity.createdAt,
+  }));
+
+  res.json({
+    success: true,
+    data: transformedActivities,
+  });
+});
+
+module.exports = { register, login, getProfile, refreshToken, logout, updateProfile, updateSettings, changePassword, getActivities };

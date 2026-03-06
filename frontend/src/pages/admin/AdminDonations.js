@@ -55,12 +55,9 @@ export default function AdminDonations() {
 
     return (
         <div className="fade-in">
-            <div className="admin-page-header">
-                <div>
-                    <h1 className="admin-page-title"><UIcon name="dollar" size={22} /> {t('admin.navDonations')}</h1>
-                    <p className="admin-page-subtitle">{t('admin.donationsSubtitle')}</p>
-                </div>
-            </div>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <UIcon name="dollar" size={20} /> {t('admin.navDonations')}
+            </h2>
 
             <div className="admin-card">
                 {/* Filters */}

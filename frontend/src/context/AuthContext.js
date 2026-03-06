@@ -72,6 +72,20 @@ export function AuthProvider({ children }) {
     socketService.disconnect();
   }, []);
 
+  // Refresh user profile from server
+  const refreshUser = useCallback(async () => {
+    try {
+      const { data } = await authService.getProfile();
+      const userData = data.data;
+      localStorage.setItem('ihsan_user', JSON.stringify(userData));
+      setUser(userData);
+      return userData;
+    } catch (err) {
+      console.error('Failed to refresh user:', err);
+      return null;
+    }
+  }, []);
+
   const value = {
     user,
     token,
@@ -80,6 +94,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    refreshUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

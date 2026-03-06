@@ -26,7 +26,7 @@ function AnimatedCounter({ end, duration = 2000, suffix = '' }) {
 }
 
 export default function HomePage() {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { t } = useLanguage();
   const [stats, setStats] = useState({ total: 0, totalAmount: 0, confirmed: 0 });
 
@@ -38,7 +38,7 @@ export default function HomePage() {
         const totalAmount = txs.reduce((sum, t) => sum + (t.amount || 0), 0);
         setStats({ total: txs.length, confirmed: confirmed.length, totalAmount });
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   return (
@@ -116,12 +116,20 @@ export default function HomePage() {
             <div className="hero-actions">
               {isAuthenticated ? (
                 <>
-                  <Link to="/needs" className="btn btn-primary btn-lg">
-                    <UIcon name="heart" /> {t('home.browseNeeds')}
-                  </Link>
-                  <Link to="/dashboard" className="btn btn-secondary btn-lg">
-                    <UIcon name="pulse" /> {t('home.liveDashboard')}
-                  </Link>
+                  {user?.role === 'ADMIN' ? (
+                    <Link to="/admin" className="btn btn-primary btn-lg">
+                      <UIcon name="pulse" /> {t('admin.navOverview', 'Admin Panel')}
+                    </Link>
+                  ) : (
+                    <>
+                      <Link to="/needs" className="btn btn-primary btn-lg">
+                        <UIcon name="heart" /> {t('home.browseNeeds')}
+                      </Link>
+                      <Link to="/dashboard" className="btn btn-secondary btn-lg">
+                        <UIcon name="pulse" /> {t('home.liveDashboard')}
+                      </Link>
+                    </>
+                  )}
                 </>
               ) : (
                 <>
@@ -162,7 +170,7 @@ export default function HomePage() {
         {/* Wave separator */}
         <div className="hero-wave">
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 32L48 37.3C96 43 192 53 288 58.7C384 64 480 64 576 56C672 48 768 32 864 26.7C960 21 1056 27 1152 32C1248 37 1344 43 1392 45.3L1440 48V80H1392C1344 80 1248 80 1152 80C1056 80 960 80 864 80C768 80 672 80 576 80C480 80 384 80 288 80C192 80 96 80 48 80H0V32Z" fill="var(--bg-secondary)"/>
+            <path d="M0 32L48 37.3C96 43 192 53 288 58.7C384 64 480 64 576 56C672 48 768 32 864 26.7C960 21 1056 27 1152 32C1248 37 1344 43 1392 45.3L1440 48V80H1392C1344 80 1248 80 1152 80C1056 80 960 80 864 80C768 80 672 80 576 80C480 80 384 80 288 80C192 80 96 80 48 80H0V32Z" fill="var(--bg-secondary)" />
           </svg>
         </div>
       </section>

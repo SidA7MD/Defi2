@@ -178,7 +178,7 @@ export default function RestaurantPage() {
   return (
     <div className="container">
       {/* Restaurant Profile Header */}
-      <div className="app-profile-header">
+      <div className="app-profile-header role-restaurant">
         <div className="app-profile-avatar"><UIcon name="restaurant" size={32} /></div>
         <div className="app-profile-info">
           <h1 className="app-profile-name">{restaurantInfo?.name || user.name}</h1>

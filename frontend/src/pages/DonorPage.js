@@ -76,12 +76,12 @@ export default function DonorPage() {
 
   const filtered = activeTab === 'pending' ? pending
     : activeTab === 'confirmed' ? confirmed
-    : donations;
+      : donations;
 
   return (
     <div className="container">
       {/* Donor Profile Header */}
-      <div className="app-profile-header">
+      <div className="app-profile-header role-donor">
         <div className="app-profile-avatar"><UIcon name="hand-holding-heart" size={32} /></div>
         <div className="app-profile-info">
           <h1 className="app-profile-name">{donorInfo?.name || user.name}</h1>

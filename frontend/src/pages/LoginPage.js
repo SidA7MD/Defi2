@@ -24,7 +24,7 @@ export default function LoginPage() {
         DONOR: '/needs',
         VALIDATOR: '/validator',
         RESTAURANT: '/restaurant',
-        ADMIN: '/dashboard',
+        ADMIN: '/admin',
       };
       navigate(roleRoutes[user.role] || '/');
     } catch (err) {

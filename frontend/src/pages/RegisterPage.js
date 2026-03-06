@@ -31,7 +31,7 @@ export default function RegisterPage() {
         DONOR: '/needs',
         VALIDATOR: '/validator',
         RESTAURANT: '/restaurant',
-        ADMIN: '/dashboard',
+        ADMIN: '/admin',
       };
       navigate(roleRoutes[user.role] || '/');
     } catch (err) {

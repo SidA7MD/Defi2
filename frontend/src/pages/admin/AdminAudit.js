@@ -56,12 +56,9 @@ export default function AdminAudit() {
 
     return (
         <div className="fade-in">
-            <div className="admin-page-header">
-                <div>
-                    <h1 className="admin-page-title"><UIcon name="document" size={22} /> {t('admin.navAudit')}</h1>
-                    <p className="admin-page-subtitle">{t('admin.auditSubtitle')}</p>
-                </div>
-            </div>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <UIcon name="document" size={20} /> {t('admin.navAudit')}
+            </h2>
 
             <div className="admin-card">
                 {/* Filters */}

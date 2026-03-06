@@ -203,6 +203,63 @@ class AuthService {
     };
   }
 
+  /**
+   * Update user profile (name, neighborhood)
+   */
+  async updateProfile(userId, { name, neighborhood }) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+
+    const updateData = {};
+    if (name !== undefined) updateData.name = name;
+    if (neighborhood !== undefined) updateData.neighborhood = neighborhood;
+
+    const updatedUser = await userRepository.update(userId, updateData);
+    return this._sanitizeUser(updatedUser);
+  }
+
+  /**
+   * Update user settings (notifications, language)
+   */
+  async updateSettings(userId, { emailNotifications, pushNotifications, language }) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+
+    const updateData = {};
+    if (emailNotifications !== undefined) updateData.emailNotifications = emailNotifications;
+    if (pushNotifications !== undefined) updateData.pushNotifications = pushNotifications;
+    if (language !== undefined) updateData.language = language;
+
+    const updatedUser = await userRepository.update(userId, updateData);
+    return this._sanitizeUser(updatedUser);
+  }
+
+  /**
+   * Change user password
+   */
+  async changePassword(userId, { currentPassword, newPassword }) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+
+    // Verify current password
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!isPasswordValid) {
+      throw new UnauthorizedError('Current password is incorrect');
+    }
+
+    // Hash and update new password
+    const passwordHash = await bcrypt.hash(newPassword, 12);
+    await userRepository.update(userId, { passwordHash });
+
+    return { success: true };
+  }
+
   _generateAccessToken(user) {
     return jwt.sign(
       {
@@ -257,6 +314,11 @@ class AuthService {
       role: user.role,
       isApproved: user.isApproved,
       reputationScore: user.reputationScore,
+      neighborhood: user.neighborhood,
+      emailNotifications: user.emailNotifications,
+      pushNotifications: user.pushNotifications,
+      language: user.language,
+      twoFactorEnabled: user.twoFactorEnabled,
       createdAt: user.createdAt,
     };
   }

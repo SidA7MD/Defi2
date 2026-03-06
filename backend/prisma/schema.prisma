@@ -20,6 +20,15 @@ model User {
   isApproved       Boolean    @default(false) @map("is_approved")
   approvedBy       String?    @map("approved_by")
   reputationScore  Int        @default(0) @map("reputation_score")
+  neighborhood     String?
+  
+  // Settings
+  emailNotifications  Boolean  @default(true) @map("email_notifications")
+  pushNotifications   Boolean  @default(false) @map("push_notifications")
+  language            String   @default("fr")
+  twoFactorEnabled    Boolean  @default(false) @map("two_factor_enabled")
+  twoFactorSecret     String?  @map("two_factor_secret")
+  
   createdAt        DateTime   @default(now()) @map("created_at")
   updatedAt        DateTime   @updatedAt @map("updated_at")
 

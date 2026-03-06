@@ -90,11 +90,10 @@ export default function AdminUsers() {
 
     return (
         <div className="fade-in">
-            <div className="admin-page-header">
-                <div>
-                    <h1 className="admin-page-title"><UIcon name="users" size={22} /> {t('admin.navUsers')}</h1>
-                    <p className="admin-page-subtitle">{t('admin.usersSubtitle')}</p>
-                </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <UIcon name="users" size={20} /> {t('admin.navUsers')}
+                </h2>
                 <button className="btn btn-primary btn-sm" onClick={() => setShowCreateForm(!showCreateForm)}>
                     <UIcon name="user-add" size={14} /> {showCreateForm ? t('admin.cancel') : t('admin.createBtn')}
                 </button>
@@ -102,10 +101,10 @@ export default function AdminUsers() {
 
             {/* Create User Form */}
             {showCreateForm && (
-                <div className="admin-card fade-in" style={{ borderStyle: 'dashed', background: 'var(--gray-50)' }}>
-                    <h3 className="admin-card-title"><UIcon name="user-add" size={16} /> {t('admin.createPrivileged')}</h3>
-                    <form onSubmit={handleCreate}>
-                        <div className="admin-form-grid">
+                <div className="card fade-in" style={{ marginBottom: '2rem' }}>
+                    <div className="card-header"><h3 style={{ margin: 0, fontSize: '1.1rem' }}>{t('admin.createPrivileged')}</h3></div>
+                    <form className="app-order-inner" onSubmit={handleCreate}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(220px, 100%), 1fr))', gap: '1.25rem' }}>
                             <div className="form-group">
                                 <label className="form-label">{t('admin.nameLabel')}</label>
                                 <input className="form-input" value={createForm.name}
@@ -130,10 +129,11 @@ export default function AdminUsers() {
                                     onChange={(e) => setCreateForm({ ...createForm, role: e.target.value })}>
                                     <option value="VALIDATOR">{t('admin.roleValidator')}</option>
                                     <option value="ADMIN">{t('admin.roleAdmin')}</option>
+                                    <option value="RESTAURANT">{t('admin.roleRestaurant', 'RESTAURANT')}</option>
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-primary" disabled={creating} style={{ marginTop: '1rem' }}>
+                        <button type="submit" className="btn btn-primary" disabled={creating} style={{ marginTop: '1.25rem' }}>
                             <UIcon name="user-add" size={14} /> {creating ? t('admin.creating') : t('admin.submitCreate')}
                         </button>
                     </form>
