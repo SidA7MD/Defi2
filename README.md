@@ -187,8 +187,8 @@ ihsan/
 ### 1. Cloner & Installer
 
 ```bash
-git clone https://github.com/votre-repo/ihsan.git
-cd ihsan
+git clone https://github.com/SidA7MD/Defi2.git
+cd Defi2
 
 # Installer les dépendances du backend
 cd backend && npm install
