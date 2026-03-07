@@ -47,9 +47,9 @@ jest.mock('../repositories', () => {
         return null;
       }),
       update: jest.fn(async (id, data) => {
-        const d = donations.get(id);
-        if (!d) return null;
-        const updated = { ...d, ...data };
+        const existingDonation = donations.get(id);
+        if (!existingDonation) return null;
+        const updated = { ...existingDonation, ...data };
         donations.set(id, updated);
         return updated;
       }),

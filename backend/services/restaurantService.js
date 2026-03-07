@@ -39,9 +39,9 @@ class RestaurantService {
     const confirmedNeeds = needs.filter(n => n.status === 'CONFIRMED');
     const totalAmount = confirmedNeeds
       .reduce((sum, n) => sum + parseFloat(n.estimatedAmount || 0), 0);
-    const todayOrders = needs.filter(n => {
-      const d = n.lockedAt || n.createdAt;
-      return d && new Date(d) >= today;
+    const todayOrders = needs.filter(order => {
+      const orderDate = order.lockedAt || order.createdAt;
+      return orderDate && new Date(orderDate) >= today;
     }).length;
 
     // Average order value
@@ -60,12 +60,12 @@ class RestaurantService {
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
     oneWeekAgo.setHours(0, 0, 0, 0);
 
-    needs.forEach(n => {
-      const d = new Date(n.lockedAt || n.createdAt);
-      if (d >= oneWeekAgo) {
-        const dayIdx = d.getDay();
+    needs.forEach(need => {
+      const date = new Date(need.lockedAt || need.createdAt);
+      if (date >= oneWeekAgo) {
+        const dayIdx = date.getDay();
         weeklyData[dayIdx].count++;
-        weeklyData[dayIdx].amount += parseFloat(n.estimatedAmount || 0);
+        weeklyData[dayIdx].amount += parseFloat(need.estimatedAmount || 0);
       }
     });
 
