@@ -461,9 +461,6 @@ npm test
 
 ---
 
-## 📜 Licence
-
-MIT — voir [LICENSE](LICENSE)
 
 ---
 
