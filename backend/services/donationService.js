@@ -196,7 +196,7 @@ class DonationService {
     return updated;
   }
 
-  async getDonorDonations(donorId) {
+  static async getDonorDonations(donorId) {
     const donations = await donationRepository.findByDonor(donorId);
     return donations.map(d => ({
       ...d,
@@ -204,7 +204,7 @@ class DonationService {
     }));
   }
 
-  async getDonationById(id) {
+  static async getDonationById(id) {
     const donation = await donationRepository.findById(id);
     if (!donation) {
       throw new NotFoundError('Donation');
@@ -219,7 +219,7 @@ class DonationService {
    * Verify a transaction hash with full integrity check.
    * Recomputes hash from stored fields and compares.
    */
-  async verifyTransaction(transactionHash) {
+  static async verifyTransaction(transactionHash) {
     const donation = await donationRepository.findByHash(transactionHash);
     if (!donation) {
       throw new NotFoundError('Transaction');
@@ -247,7 +247,7 @@ class DonationService {
     };
   }
 
-  async getPublicDashboard() {
+  static async getPublicDashboard() {
     const donations = await donationRepository.findAll(100);
     return donations.map((d) => ({
       id: d.id,
@@ -263,7 +263,7 @@ class DonationService {
     }));
   }
 
-  async getConfirmedDonations() {
+  static async getConfirmedDonations() {
     const donations = await donationRepository.findConfirmed(50);
     return donations.map((d) => ({
       id: d.id,
@@ -279,7 +279,7 @@ class DonationService {
   /**
    * Aggregated dashboard statistics — uses database-level aggregation.
    */
-  async getDashboardStats() {
+  static async getDashboardStats() {
     const prisma = require('../config/database');
 
     const [totalStats, confirmedStats, needStats, recentDonations] = await Promise.all([
@@ -339,7 +339,7 @@ class DonationService {
     };
   }
 
-  async getDonorStats(donorId) {
+  static async getDonorStats(donorId) {
     const { userRepository } = require('../repositories');
     const user = await userRepository.findById(donorId);
     const donations = await donationRepository.findByDonor(donorId);

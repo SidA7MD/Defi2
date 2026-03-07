@@ -63,7 +63,7 @@ class ImpactProofService {
     return proof;
   }
 
-  async getProofByDonationId(donationId) {
+  static async getProofByDonationId(donationId) {
     const proof = await impactProofRepository.findByDonationId(donationId);
     if (!proof) {
       throw new NotFoundError('Impact proof');

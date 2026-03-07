@@ -1,30 +1,30 @@
 const prisma = require('../config/database');
 
 class UserRepository {
-  async findById(id) {
+  static async findById(id) {
     return prisma.user.findUnique({ where: { id } });
   }
 
-  async findByEmail(email) {
+  static async findByEmail(email) {
     return prisma.user.findUnique({ where: { email } });
   }
 
-  async create(data) {
+  static async create(data) {
     return prisma.user.create({ data });
   }
 
-  async update(id, data) {
+  static async update(id, data) {
     return prisma.user.update({ where: { id }, data });
   }
 
-  async incrementReputation(id, amount = 1) {
+  static async incrementReputation(id, amount = 1) {
     return prisma.user.update({
       where: { id },
       data: { reputationScore: { increment: amount } },
     });
   }
 
-  async findAllByRole(role) {
+  static async findAllByRole(role) {
     return prisma.user.findMany({
       where: { role },
       select: {

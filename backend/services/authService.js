@@ -175,7 +175,7 @@ class AuthService {
   /**
    * Revoke a refresh token (logout).
    */
-  async revokeRefreshToken(refreshTokenStr) {
+  static async revokeRefreshToken(refreshTokenStr) {
     const prisma = require('../config/database');
 
     await prisma.refreshToken.updateMany({
@@ -241,7 +241,7 @@ class AuthService {
   /**
    * Change user password
    */
-  async changePassword(userId, { currentPassword, newPassword }) {
+  static async changePassword(userId, { currentPassword, newPassword }) {
     const user = await userRepository.findById(userId);
     if (!user) {
       throw new NotFoundError('User');
@@ -260,7 +260,7 @@ class AuthService {
     return { success: true };
   }
 
-  _generateAccessToken(user) {
+  static _generateAccessToken(user) {
     return jwt.sign(
       {
         id: user.id,
@@ -292,7 +292,7 @@ class AuthService {
     return token;
   }
 
-  _parseDuration(str) {
+  static _parseDuration(str) {
     const match = str.match(/^(\d+)([smhd])$/);
     if (!match) return 7 * 24 * 60 * 60 * 1000; // default 7 days
     const val = parseInt(match[1], 10);
@@ -306,7 +306,7 @@ class AuthService {
     }
   }
 
-  _sanitizeUser(user) {
+  static _sanitizeUser(user) {
     return {
       id: user.id,
       name: user.name,

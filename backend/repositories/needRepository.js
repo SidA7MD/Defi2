@@ -1,7 +1,7 @@
 const prisma = require('../config/database');
 
 class NeedRepository {
-  async findById(id) {
+  static async findById(id) {
     return prisma.need.findUnique({
       where: { id },
       include: {
@@ -22,7 +22,7 @@ class NeedRepository {
     });
   }
 
-  async findAll(filters = {}) {
+  static async findAll(filters = {}) {
     const where = {};
 
     if (filters.status) where.status = filters.status;
@@ -65,7 +65,7 @@ class NeedRepository {
     });
   }
 
-  async create(data) {
+  static async create(data) {
     return prisma.need.create({
       data,
       include: {
@@ -76,7 +76,7 @@ class NeedRepository {
     });
   }
 
-  async update(id, data) {
+  static async update(id, data) {
     return prisma.need.update({
       where: { id },
       data,
@@ -89,7 +89,7 @@ class NeedRepository {
     });
   }
 
-  async findByRestaurant(restaurantId, statuses) {
+  static async findByRestaurant(restaurantId, statuses) {
     const where = { restaurantId };
     if (statuses && statuses.length) {
       where.status = { in: statuses };

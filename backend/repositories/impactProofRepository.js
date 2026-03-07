@@ -1,7 +1,7 @@
 const prisma = require('../config/database');
 
 class ImpactProofRepository {
-  async findByDonationId(donationId) {
+  static async findByDonationId(donationId) {
     return prisma.impactProof.findUnique({
       where: { donationId },
       include: {
@@ -21,7 +21,7 @@ class ImpactProofRepository {
     });
   }
 
-  async create(data) {
+  static async create(data) {
     return prisma.impactProof.create({
       data,
       include: {
