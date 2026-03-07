@@ -1,7 +1,7 @@
 const prisma = require('../config/database');
 
 class RestaurantRepository {
-  async findById(id) {
+  static async findById(id) {
     return prisma.restaurant.findUnique({
       where: { id },
       include: {
@@ -10,7 +10,7 @@ class RestaurantRepository {
     });
   }
 
-  async findByUserId(userId) {
+  static async findByUserId(userId) {
     return prisma.restaurant.findUnique({
       where: { userId },
       include: {
@@ -19,7 +19,7 @@ class RestaurantRepository {
     });
   }
 
-  async findByUserIdWithStats(userId) {
+  static async findByUserIdWithStats(userId) {
     const restaurant = await prisma.restaurant.findUnique({
       where: { userId },
       include: {
@@ -41,7 +41,7 @@ class RestaurantRepository {
     return restaurant;
   }
 
-  async findAll() {
+  static async findAll() {
     return prisma.restaurant.findMany({
       include: {
         user: { select: { id: true, name: true } },
@@ -50,7 +50,7 @@ class RestaurantRepository {
     });
   }
 
-  async create(data) {
+  static async create(data) {
     return prisma.restaurant.create({ data });
   }
 }

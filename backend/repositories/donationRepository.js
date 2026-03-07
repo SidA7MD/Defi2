@@ -1,7 +1,7 @@
 const prisma = require('../config/database');
 
 class DonationRepository {
-  async findById(id) {
+  static async findById(id) {
     return prisma.donation.findUnique({
       where: { id },
       include: {
@@ -19,7 +19,7 @@ class DonationRepository {
     });
   }
 
-  async findByHash(transactionHash) {
+  static async findByHash(transactionHash) {
     return prisma.donation.findUnique({
       where: { transactionHash },
       include: {
@@ -43,7 +43,7 @@ class DonationRepository {
     });
   }
 
-  async create(data) {
+  static async create(data) {
     return prisma.donation.create({
       data,
       include: {
@@ -58,14 +58,14 @@ class DonationRepository {
     });
   }
 
-  async update(id, data) {
+  static async update(id, data) {
     return prisma.donation.update({
       where: { id },
       data,
     });
   }
 
-  async findByDonor(donorId) {
+  static async findByDonor(donorId) {
     return prisma.donation.findMany({
       where: { donorId },
       include: {
@@ -84,7 +84,7 @@ class DonationRepository {
     });
   }
 
-  async findByNeed(needId) {
+  static async findByNeed(needId) {
     return prisma.donation.findMany({
       where: { needId },
       include: {
@@ -94,7 +94,7 @@ class DonationRepository {
     });
   }
 
-  async findConfirmed(limit = 50) {
+  static async findConfirmed(limit = 50) {
     return prisma.donation.findMany({
       where: { status: 'CONFIRMED', immutable: true },
       include: {
@@ -111,7 +111,7 @@ class DonationRepository {
     });
   }
 
-  async findAll(limit = 100) {
+  static async findAll(limit = 100) {
     return prisma.donation.findMany({
       include: {
         need: {
@@ -131,7 +131,7 @@ class DonationRepository {
    * Get the hash of the most recent donation for hash chain linking.
    * Returns null if no donations exist (GENESIS).
    */
-  async getLastHash() {
+  static async getLastHash() {
     const last = await prisma.donation.findFirst({
       orderBy: { createdAt: 'desc' },
       select: { transactionHash: true },

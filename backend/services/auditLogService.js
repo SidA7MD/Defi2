@@ -12,7 +12,7 @@ class AuditLogService {
      * @param {object} metadata - Additional context (JSON-serializable)
      * @param {string} ipAddress - Client IP (optional)
      */
-    async log(actorId, action, entityType, entityId, metadata = {}, ipAddress = null) {
+    static async log(actorId, action, entityType, entityId, metadata = {}, ipAddress = null) {
         try {
             await prisma.auditLog.create({
                 data: {
@@ -33,7 +33,7 @@ class AuditLogService {
     /**
      * Get audit trail for a specific entity.
      */
-    async getByEntity(entityType, entityId) {
+    static async getByEntity(entityType, entityId) {
         return prisma.auditLog.findMany({
             where: { entityType, entityId },
             orderBy: { createdAt: 'desc' },
@@ -43,7 +43,7 @@ class AuditLogService {
     /**
      * Get audit trail for a specific actor.
      */
-    async getByActor(actorId, limit = 50) {
+    static async getByActor(actorId, limit = 50) {
         return prisma.auditLog.findMany({
             where: { actorId },
             orderBy: { createdAt: 'desc' },
@@ -54,7 +54,7 @@ class AuditLogService {
     /**
      * Get flagged/anomalous actions.
      */
-    async getAnomalies(limit = 50) {
+    static async getAnomalies(limit = 50) {
         return prisma.auditLog.findMany({
             where: {
                 action: { startsWith: 'ANOMALY' },
@@ -67,7 +67,7 @@ class AuditLogService {
     /**
      * Get system-wide recent activity.
      */
-    async getRecentActivity(limit = 100) {
+    static async getRecentActivity(limit = 100) {
         return prisma.auditLog.findMany({
             orderBy: { createdAt: 'desc' },
             take: limit,

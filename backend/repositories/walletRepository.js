@@ -1,7 +1,7 @@
 const prisma = require('../config/database');
 
 class WalletRepository {
-  async findByUserId(userId) {
+  static async findByUserId(userId) {
     return prisma.wallet.findUnique({
       where: { userId },
       include: {
@@ -13,19 +13,19 @@ class WalletRepository {
     });
   }
 
-  async findById(id) {
+  static async findById(id) {
     return prisma.wallet.findUnique({
       where: { id },
     });
   }
 
-  async create(userId) {
+  static async create(userId) {
     return prisma.wallet.create({
       data: { userId, balance: 0 },
     });
   }
 
-  async getOrCreate(userId) {
+  static async getOrCreate(userId) {
     let wallet = await prisma.wallet.findUnique({ where: { userId } });
     if (!wallet) {
       wallet = await prisma.wallet.create({
@@ -35,18 +35,18 @@ class WalletRepository {
     return wallet;
   }
 
-  async updateBalance(walletId, newBalance) {
+  static async updateBalance(walletId, newBalance) {
     return prisma.wallet.update({
       where: { id: walletId },
       data: { balance: newBalance },
     });
   }
 
-  async createTransaction(data) {
+  static async createTransaction(data) {
     return prisma.walletTransaction.create({ data });
   }
 
-  async getTransactions(walletId, limit = 50) {
+  static async getTransactions(walletId, limit = 50) {
     return prisma.walletTransaction.findMany({
       where: { walletId },
       orderBy: { createdAt: 'desc' },
@@ -57,7 +57,7 @@ class WalletRepository {
   /**
    * Atomically deposit: update balance + create transaction in one DB call
    */
-  async deposit(walletId, amount, description, reference = null) {
+  static async deposit(walletId, amount, description, reference = null) {
     return prisma.$transaction(async (tx) => {
       const wallet = await tx.wallet.update({
         where: { id: walletId },
@@ -82,7 +82,7 @@ class WalletRepository {
   /**
    * Atomically deduct: update balance + create transaction in one DB call
    */
-  async deduct(walletId, amount, type, description, reference = null) {
+  static async deduct(walletId, amount, type, description, reference = null) {
     return prisma.$transaction(async (tx) => {
       const wallet = await tx.wallet.findUnique({ where: { id: walletId } });
       if (!wallet || wallet.balance < amount) {

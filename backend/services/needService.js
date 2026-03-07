@@ -2,7 +2,7 @@ const { needRepository } = require('../repositories');
 const { NotFoundError, ForbiddenError, ConflictError } = require('../utils/errors');
 
 class NeedService {
-  async createNeed(validatorId, data) {
+  static async createNeed(validatorId, data) {
     const need = await needRepository.create({
       validatorId,
       type: data.type,
@@ -26,11 +26,11 @@ class NeedService {
     return need;
   }
 
-  async getNeeds(filters = {}) {
+  static async getNeeds(filters = {}) {
     return needRepository.findAll(filters);
   }
 
-  async getNeedById(id) {
+  static async getNeedById(id) {
     const need = await needRepository.findById(id);
     if (!need) {
       throw new NotFoundError('Need');
@@ -38,7 +38,7 @@ class NeedService {
     return need;
   }
 
-  async updateNeedStatus(id, status, userId) {
+  static async updateNeedStatus(id, status, userId) {
     const need = await needRepository.findById(id);
     if (!need) {
       throw new NotFoundError('Need');
@@ -64,15 +64,15 @@ class NeedService {
     return needRepository.update(id, data);
   }
 
-  async getValidatorNeeds(validatorId) {
+  static async getValidatorNeeds(validatorId) {
     return needRepository.findAll({ validatorId });
   }
 
-  async getRestaurantNeeds(restaurantId) {
+  static async getRestaurantNeeds(restaurantId) {
     return needRepository.findByRestaurant(restaurantId, ['OPEN', 'FUNDED', 'CONFIRMED']);
   }
 
-  async confirmByRestaurant(needId, restaurantId, message) {
+  static async confirmByRestaurant(needId, restaurantId, message) {
     const need = await needRepository.findById(needId);
     if (!need) {
       throw new NotFoundError('Need');
@@ -125,7 +125,7 @@ class NeedService {
     return updated;
   }
 
-  async getValidatorStats(validatorId) {
+  static async getValidatorStats(validatorId) {
     const { userRepository } = require('../repositories');
     const user = await userRepository.findById(validatorId);
     const needs = await needRepository.findAll({ validatorId });

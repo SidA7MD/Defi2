@@ -2,11 +2,11 @@ const { restaurantRepository } = require('../repositories');
 const { NotFoundError } = require('../utils/errors');
 
 class RestaurantService {
-  async getAllRestaurants() {
+  static async getAllRestaurants() {
     return restaurantRepository.findAll();
   }
 
-  async getRestaurantById(id) {
+  static async getRestaurantById(id) {
     const restaurant = await restaurantRepository.findById(id);
     if (!restaurant) {
       throw new NotFoundError('Restaurant');
@@ -14,7 +14,7 @@ class RestaurantService {
     return restaurant;
   }
 
-  async getRestaurantByUserId(userId) {
+  static async getRestaurantByUserId(userId) {
     const restaurant = await restaurantRepository.findByUserId(userId);
     if (!restaurant) {
       throw new NotFoundError('Restaurant');
@@ -22,7 +22,7 @@ class RestaurantService {
     return restaurant;
   }
 
-  async getMyStats(userId) {
+  static async getMyStats(userId) {
     const restaurant = await restaurantRepository.findByUserIdWithStats(userId);
     if (!restaurant) {
       throw new NotFoundError('Restaurant');

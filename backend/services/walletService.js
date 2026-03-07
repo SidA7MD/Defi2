@@ -218,7 +218,7 @@ class WalletService {
   /**
    * Get wallet balance only
    */
-  async getBalance(userId) {
+  static async getBalance(userId) {
     const wallet = await walletRepository.getOrCreate(userId);
     return { balance: parseFloat(wallet.balance) };
   }
@@ -232,7 +232,7 @@ class WalletService {
     return transactions.map(this._formatTransaction);
   }
 
-  _formatTransaction(tx) {
+  static _formatTransaction(tx) {
     return {
       id: tx.id,
       type: tx.type,
