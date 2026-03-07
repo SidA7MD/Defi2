@@ -184,6 +184,10 @@ class WalletService {
 
     const wallet = await walletRepository.getOrCreate(userId);
 
+    const errorMessages = {
+      INSUFFICIENT_BALANCE: 'Insufficient wallet balance',
+    };
+
     let result = null;
     try {
       result = await walletRepository.deduct(
@@ -194,20 +198,19 @@ class WalletService {
         null
       );
     } catch (err) {
-      if (err.message === 'INSUFFICIENT_BALANCE') {
-        throw new ConflictError('Insufficient wallet balance');
+      const message = errorMessages[err.message];
+      if (message) {
+        throw new ConflictError(message);
       }
       throw err;
     }
 
     const { wallet: updated, transaction } = result;
 
-    if (this.io) {
-      this.io.to(`user:${userId}`).emit('wallet:updated', {
-        balance: parseFloat(updated.balance),
-        transaction: this._formatTransaction(transaction),
-      });
-    }
+    this.io?.to(`user:${userId}`).emit('wallet:updated', {
+      balance: parseFloat(updated.balance),
+      transaction: this._formatTransaction(transaction),
+    });
 
     return {
       balance: parseFloat(updated.balance),

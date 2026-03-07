@@ -414,26 +414,42 @@ const toggleDonationFlag = asyncHandler(async (req, res) => {
         return res.status(404).json({ success: false, message: 'Donation not found' });
     }
 
+    const toggleTo = !donation.flagged;
+    const flagActions = {
+        true: {
+            actionType: 'ADMIN_FLAG_DONATION',
+            message: 'Donation flagged',
+            reason: flagReason || 'Flagged by admin'
+        },
+        false: {
+            actionType: 'ADMIN_UNFLAG_DONATION',
+            message: 'Donation unflagged',
+            reason: null
+        }
+    };
+
+    const selected = flagActions[toggleTo];
+
     const updated = await prisma.donation.update({
         where: { id: donationId },
         data: {
-            flagged: !donation.flagged,
-            flagReason: !donation.flagged ? (flagReason || 'Flagged by admin') : null,
+            flagged: toggleTo,
+            flagReason: selected.reason
         },
     });
 
     await auditLogService.log(
         req.user.id,
-        updated.flagged ? 'ADMIN_FLAG_DONATION' : 'ADMIN_UNFLAG_DONATION',
+        selected.actionType,
         'Donation',
         donationId,
-        { amount: parseFloat(donation.amount), flagReason },
+        { amount: parseFloat(donation.amount), flagReason: selected.reason },
         req.ip
     );
 
     res.json({
         success: true,
-        message: updated.flagged ? 'Donation flagged' : 'Donation unflagged',
+        message: selected.message,
         data: { id: updated.id, flagged: updated.flagged },
     });
 });

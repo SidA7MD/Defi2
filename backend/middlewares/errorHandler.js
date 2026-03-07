@@ -10,19 +10,16 @@ const errorHandler = (err, req, res, next) => {
   }
 
   // Prisma known errors
-  if (err.code === 'P2002') {
-    return res.status(409).json({
+  const prismaErrors = {
+    P2002: { status: 409, code: 'CONFLICT', message: 'A record with this value already exists' },
+    P2025: { status: 404, code: 'NOT_FOUND', message: 'Record not found' },
+  };
+  const prismaError = prismaErrors[err.code];
+  if (prismaError) {
+    return res.status(prismaError.status).json({
       success: false,
-      code: 'CONFLICT',
-      message: 'A record with this value already exists',
-    });
-  }
-
-  if (err.code === 'P2025') {
-    return res.status(404).json({
-      success: false,
-      code: 'NOT_FOUND',
-      message: 'Record not found',
+      code: prismaError.code,
+      message: prismaError.message,
     });
   }
 

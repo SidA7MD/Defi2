@@ -15,19 +15,18 @@ class ImpactProofService {
   async createImpactProof(validatorId, { donationId, confirmationMessage, photoUrl }) {
     // Check if donation exists
     const donation = await donationRepository.findById(donationId);
-    if (!donation) {
-      throw new NotFoundError('Donation');
-    }
-
     // Check if already has proof
     const existingProof = await impactProofRepository.findByDonationId(donationId);
-    if (existingProof) {
-      throw new ConflictError('Impact proof already submitted for this donation');
-    }
-
     // Only the validator of the related need can submit proof
-    if (donation.need.validatorId !== validatorId) {
-      throw new ForbiddenError('Only the assigned validator can submit proof');
+    const errorCases = [
+      { condition: () => !donation, error: new NotFoundError('Donation') },
+      { condition: () => existingProof, error: new ConflictError('Impact proof already submitted for this donation') },
+      { condition: () => donation.need.validatorId !== validatorId, error: new ForbiddenError('Only the assigned validator can submit proof') },
+    ];
+    for (const { condition, error } of errorCases) {
+      if (condition()) {
+        throw error;
+      }
     }
 
     // Create impact proof

@@ -29,12 +29,25 @@ class DonationService {
     await walletService.deductForDonation(donorId, donationAmount, null);
 
     // Credit the restaurant or validator wallet
-    const recipientUserId = need.restaurantId
-      ? (await require('../repositories').restaurantRepository.findById(need.restaurantId))?.userId
-      : need.validatorId;
-    if (recipientUserId) {
-      await walletService.creditForDonation(recipientUserId, donationAmount, null);
-    }
+    const creditActions = {
+      restaurant: async id => {
+        const restaurant = await require('../repositories').restaurantRepository.findById(id);
+        const userId = restaurant?.userId;
+        if (userId) {
+          await walletService.creditForDonation(userId, donationAmount, null);
+        }
+      },
+      validator: async id => {
+        if (id) {
+          await walletService.creditForDonation(id, donationAmount, null);
+        }
+      }
+    };
+
+    const donationTarget = need.restaurantId
+      ? { type: 'restaurant', id: need.restaurantId }
+      : { type: 'validator', id: need.validatorId };
+    await creditActions[donationTarget.type](donationTarget.id);
 
     // Generate timestamp and transaction hash (with structured separator)
     const timestamp = new Date().toISOString();
@@ -103,53 +116,25 @@ class DonationService {
 
     return {
       donation: {
-        id: donation.id,
-        amount: parseFloat(donation.amount),
-        transactionHash: donation.transactionHash,
-        previousHash: donation.previousHash,
-        status: donation.status,
-        createdAt: donation.createdAt,
-        need: {
-          id: need.id,
-          type: need.type,
-          description: need.description,
-          neighborhood: need.neighborhood,
-        },
-      },
-      receipt: {
-        transactionId: donation.id,
-        transactionHash: donation.transactionHash,
-        previousHash: donation.previousHash,
-        amount: parseFloat(donation.amount),
-        timestamp: donation.createdAt,
-        needDescription: need.description,
-        neighborhood: need.neighborhood,
-      },
-    };
-  }
-
   async confirmDonation(donationId, validatorId) {
     const donation = await donationRepository.findById(donationId);
-    if (!donation) {
-      throw new NotFoundError('Donation');
-    }
 
-    if (donation.status === 'CONFIRMED') {
-      throw new ConflictError('Donation already confirmed');
-    }
+    const validations = [
+      { condition: !donation, error: new NotFoundError('Donation') },
+      { condition: donation.status === 'CONFIRMED', error: new ConflictError('Donation already confirmed') },
+      { condition: donation.need.validatorId !== validatorId, error: new ForbiddenError('Only the assigned validator can confirm this donation') },
+    ];
 
-    // Only the validator of the related need can confirm
-    if (donation.need.validatorId !== validatorId) {
-      throw new ForbiddenError('Only the assigned validator can confirm this donation');
-    }
+    validations.forEach(v => {
+      if (v.condition) throw v.error;
+    });
 
-    // Anomaly detection: flag if validator created the need AND donated to it
-    let flagged = false;
-    let flagReason = null;
-    if (donation.donorId === validatorId) {
-      flagged = true;
-      flagReason = 'ANOMALY_SELF_DONATE_CONFIRM: Validator donated to and confirmed their own need';
-    }
+    const anomalyMap = {
+      true: 'ANOMALY_SELF_DONATE_CONFIRM: Validator donated to and confirmed their own need',
+    };
+
+    const flagReason = anomalyMap[donation.donorId === validatorId] || null;
+    const flagged = Boolean(flagReason);
 
     // Confirm and make immutable
     const confirmedAt = new Date();

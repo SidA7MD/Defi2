@@ -37,6 +37,22 @@ class AuthService {
       isApproved: true,
     });
 
+    const roleHandlers = {
+      DONOR: async () => ({ user }),
+      RESTAURANT: async () => {
+        const restaurant = await restaurantRepository.create({
+          name: restaurantName,
+          neighborhood,
+          userId: user.id,
+        });
+        return { user, restaurant };
+      },
+    };
+
+    return await roleHandlers[role]();
+  }
+}
+
     // If restaurant role, create restaurant profile
     let restaurant = null;
     if (role === 'RESTAURANT' && restaurantName) {
@@ -107,35 +123,32 @@ class AuthService {
 
   async login({ email, password }) {
     const user = await userRepository.findByEmail(email);
-    if (!user) {
-      throw new UnauthorizedError('Invalid credentials');
-    }
 
-    // Block unapproved accounts
-    if (!user.isApproved) {
-      throw new ForbiddenError('Your account is pending approval by an administrator.');
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
-    if (!isPasswordValid) {
-      throw new UnauthorizedError('Invalid credentials');
-    }
+    const isPasswordValid = user ? await bcrypt.compare(password, user.passwordHash) : false;
+    const validations = [
+      { valid: !!user, error: new UnauthorizedError('Invalid credentials') },
+      { valid: user && user.isApproved, error: new ForbiddenError('Your account is pending approval by an administrator.') },
+      { valid: isPasswordValid, error: new UnauthorizedError('Invalid credentials') },
+    ];
+    const failed = validations.find(v => !v.valid);
+    if (failed) throw failed.error;
 
     const accessToken = this._generateAccessToken(user);
     const refreshToken = await this._generateRefreshToken(user.id);
 
-    // If restaurant, include restaurant info
-    let restaurant = null;
-    if (user.role === 'RESTAURANT') {
-      restaurant = await restaurantRepository.findByUserId(user.id);
-    }
+    const roleFetchers = {
+      RESTAURANT: async id => {
+        const restaurant = await restaurantRepository.findByUserId(id);
+        return restaurant ? { id: restaurant.id, name: restaurant.name, neighborhood: restaurant.neighborhood } : null;
+      }
+    };
+
+    const restaurant = await (roleFetchers[user.role] || (() => Promise.resolve(null)))(user.id);
 
     return {
       user: {
         ...this._sanitizeUser(user),
-        restaurant: restaurant
-          ? { id: restaurant.id, name: restaurant.name, neighborhood: restaurant.neighborhood }
-          : undefined,
+        restaurant: restaurant || undefined,
       },
       token: accessToken,
       refreshToken,
@@ -294,16 +307,19 @@ class AuthService {
 
   static _parseDuration(str) {
     const match = str.match(/^(\d+)([smhd])$/);
-    if (!match) return 7 * 24 * 60 * 60 * 1000; // default 7 days
+    const DEFAULT = 7 * 24 * 60 * 60 * 1000;
+    if (!match) return DEFAULT;
     const val = parseInt(match[1], 10);
     const unit = match[2];
-    switch (unit) {
-      case 's': return val * 1000;
-      case 'm': return val * 60 * 1000;
-      case 'h': return val * 60 * 60 * 1000;
-      case 'd': return val * 24 * 60 * 60 * 1000;
-      default: return 7 * 24 * 60 * 60 * 1000;
-    }
+    const unitMultipliers = {
+      s: 1000,
+      m: 60 * 1000,
+      h: 60 * 60 * 1000,
+      d: 24 * 60 * 60 * 1000,
+    };
+    const multiplier = unitMultipliers[unit];
+    if (multiplier === undefined) return DEFAULT;
+    return val * multiplier;
   }
 
   static _sanitizeUser(user) {

@@ -44,22 +44,19 @@ class NeedService {
       throw new NotFoundError('Need');
     }
 
-    // Prevent modification of funded/confirmed needs
-    if (need.status === 'FUNDED' || need.status === 'CONFIRMED') {
-      if (status !== 'CONFIRMED') {
-        throw new ConflictError('Cannot modify a funded or confirmed need');
-      }
+    if (['FUNDED', 'CONFIRMED'].includes(need.status) && status !== 'CONFIRMED') {
+      throw new ConflictError('Cannot modify a funded or confirmed need');
     }
 
-    // Only the validator who created it can update
     if (need.validatorId !== userId) {
       throw new ForbiddenError('Only the assigned validator can update this need');
     }
 
-    const data = { status };
-    if (status === 'FUNDED') {
-      data.lockedAt = new Date();
-    }
+    const statusDataMap = {
+      FUNDED: { lockedAt: new Date() },
+    };
+
+    const data = { status, ...(statusDataMap[status] || {}) };
 
     return needRepository.update(id, data);
   }
@@ -74,30 +71,45 @@ class NeedService {
 
   static async confirmByRestaurant(needId, restaurantId, message) {
     const need = await needRepository.findById(needId);
-    if (!need) {
-      throw new NotFoundError('Need');
-    }
-    if (need.restaurantId !== restaurantId) {
-      throw new ForbiddenError('This need is not assigned to your restaurant');
-    }
-    if (need.status !== 'FUNDED') {
-      throw new ConflictError('Only funded needs can be confirmed by the restaurant');
-    }
 
-    // Update need to CONFIRMED
+    const validationMap = [
+      { condition: !need, ErrorClass: NotFoundError, args: ['Need'] },
+      { condition: need.restaurantId !== restaurantId, ErrorClass: ForbiddenError, args: ['This need is not assigned to your restaurant'] },
+      { condition: need.status !== 'FUNDED', ErrorClass: ConflictError, args: ['Only funded needs can be confirmed by the restaurant'] },
+    ];
+    validationMap.forEach(({ condition, ErrorClass, args }) => {
+      if (condition) {
+        throw new ErrorClass(...args);
+      }
+    });
+
     const updated = await needRepository.update(needId, { status: 'CONFIRMED' });
 
-    // Confirm all associated pending donations and create impact proofs
-    const { donationRepository } = require('../repositories');
-    const { impactProofRepository } = require('../repositories');
-    const { userRepository } = require('../repositories');
+    const { donationRepository, impactProofRepository } = require('../repositories');
 
-    for (const donation of need.donations) {
-      if (donation.status === 'PENDING') {
+    const donationActionMap = {
+      PENDING: async (donation) => {
         await donationRepository.update(donation.id, {
           status: 'CONFIRMED',
           confirmedAt: new Date(),
           immutable: true,
+        });
+        await impactProofRepository.create({
+          donationId: donation.id,
+          message,
+        });
+      },
+    };
+
+    for (const donation of need.donations) {
+      const action = donationActionMap[donation.status];
+      if (action) {
+        await action(donation);
+      }
+    }
+
+    return updated;
+  }
         });
 
         // Create impact proof if none exists
