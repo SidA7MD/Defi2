@@ -9,7 +9,7 @@ const { authenticate } = require('../middlewares/auth');
 const { authorize } = require('../middlewares/roleGuard');
 
 describe('Auth Middleware', () => {
-  let req, res, next;
+  let req = null, res = null, next = null;
 
   beforeEach(() => {
     req = { headers: {} };
@@ -55,7 +55,7 @@ describe('Auth Middleware', () => {
 });
 
 describe('Role Guard Middleware', () => {
-  let req, res, next;
+  let req = {}, res = {}, next = jest.fn();
 
   beforeEach(() => {
     req = { user: { id: 'user-1', role: 'DONOR' } };

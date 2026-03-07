@@ -110,7 +110,7 @@ class WalletService {
 
     // Atomic check + deduct in repository $transaction
     // Throws INSUFFICIENT_BALANCE if balance < amount
-    let result;
+    let result = null;
     try {
       result = await walletRepository.deduct(
         wallet.id,
@@ -184,7 +184,7 @@ class WalletService {
 
     const wallet = await walletRepository.getOrCreate(userId);
 
-    let result;
+    let result = null;
     try {
       result = await walletRepository.deduct(
         wallet.id,
